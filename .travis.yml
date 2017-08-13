@@ -42,10 +42,10 @@ before_script:
     fi
 script:
   - if [ $DEPS == 'modern' ];
-    then nosetests --with-doctest --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_d17cd55832_2;
-    else nosetests --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_d17cd55832_2;
+    then nosetests --with-doctest --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_d17cd55832_3;
+    else nosetests --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_d17cd55832_3;
     fi
-  - python -m properform Push 47.88.50.110:15554 asdf_seaborn_d17cd55832_2 ./profile_seaborn_d17cd55832_2
+  - python -m properform Push 47.88.50.110:15554 asdf_seaborn_d17cd55832_3 ./profile_seaborn_d17cd55832_3
 
 
- #2017-08-13 15:18:03 modified at 0 #2017-08-13 15:18:07 modified at 1 #2017-08-13 15:18:11 modified at 2
+ #2017-08-13 15:18:03 modified at 0 #2017-08-13 15:18:07 modified at 1 #2017-08-13 15:18:11 modified at 2 #2017-08-13 15:18:15 modified at 3
