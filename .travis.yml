@@ -3,14 +3,7 @@ language: python
 
 env:
   - PYTHON=2.7 DEPS=latest BACKEND=agg DOCTESTS=true
-  - PYTHON=2.7 DEPS=pinned BACKEND=agg DOCTESTS=false
-  - PYTHON=2.7 DEPS=latest BACKEND=qtagg DOCTESTS=true
-  - PYTHON=3.4 DEPS=latest BACKEND=agg DOCTESTS=true
-  - PYTHON=3.5 DEPS=latest BACKEND=agg DOCTESTS=true
-  - PYTHON=3.6 DEPS=latest BACKEND=agg DOCTESTS=true
-  - PYTHON=3.6 DEPS=latest BACKEND=qtagg DOCTESTS=true
-  - PYTHON=3.6 DEPS=minimal BACKEND=agg DOCTESTS=false
-
+ 
 
 before_install:
   - sudo apt-get update -yq
@@ -25,6 +18,9 @@ before_install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
+   # add for profile
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
 
 
 install:
@@ -36,6 +32,12 @@ install:
   - pip install pep8==1.5  # Later versions get stricter...
   - pip install https://github.com/dcramer/pyflakes/tarball/master
   - pip install .
+
+# add for profile
+  - sudo apt-get install -qq g++-4.8
+  - export CXX="g++-4.8"
+  - pip install nose-cprof
+  - pip install properform
 
 
 before_script:
@@ -52,6 +54,9 @@ script:
     make lint;
     fi
   - if [ $DOCTESTS == 'true' ];
-    then nosetests --with-doctest;
-    else nosetests;
+    then nosetests --with-doctest --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_3050ffe156_0;
+    else nosetests --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_3050ffe156_0;
     fi
+  - python -m properform Push 47.88.50.110:15554 asdf_seaborn_3050ffe156_0 ./profile_seaborn_3050ffe156_0
+
+ #2017-08-13 14:59:33 modified at 0
