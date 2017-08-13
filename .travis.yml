@@ -50,14 +50,14 @@ before_script:
   #  fi
 
 script:
-  - nosetests --with-doctest --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_9a1db37421_2
+  - nosetests --with-doctest --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_9a1db37421_3
   # Notebook tests are failing on old matplotlib
   # because the figures have every so slightly a
   # different size. Skip until I understand why.
   - if [ ${DEPS} == modern ] && [ ${PYTHON} != 3.4 ]; then
     python ipnbdoctest.py examples/*.ipynb;
     fi
-  - python -m properform Push 47.88.50.110:15554 asdf_seaborn_9a1db37421_2 ./profile_seaborn_9a1db37421_2
+  - python -m properform Push 47.88.50.110:15554 asdf_seaborn_9a1db37421_3 ./profile_seaborn_9a1db37421_3
 
 
- #2017-08-13 16:00:16 modified at 0 #2017-08-13 16:00:20 modified at 1 #2017-08-13 16:00:25 modified at 2
+ #2017-08-13 16:00:16 modified at 0 #2017-08-13 16:00:20 modified at 1 #2017-08-13 16:00:25 modified at 2 #2017-08-13 16:00:29 modified at 3
