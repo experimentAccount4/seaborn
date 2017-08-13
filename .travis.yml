@@ -2,9 +2,6 @@ language: python
 
 env:
   - PYTHON=2.7 DEPS=modern
-  - PYTHON=2.7 DEPS=minimal
-  - PYTHON=3.4 DEPS=modern
-  #- PYTHON=3.5 DEPS=modern
 
 install:
   - conda update conda --yes
@@ -23,6 +20,11 @@ install:
   - pip install https://github.com/dcramer/pyflakes/tarball/master
   - pip install .
   - cp testing/matplotlibrc .
+# add for profile
+  - sudo apt-get install -qq g++-4.8
+  - export CXX="g++-4.8"
+  - pip install nose-cprof
+  - pip install properform
 
 before_install:
   - sudo apt-get update -yq
@@ -37,6 +39,9 @@ before_install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
+   # add for profile
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
 
 before_script:
   - if [ ${PYTHON:0:1} == "2" ]; then
@@ -50,6 +55,9 @@ before_script:
 
 script:
   - if [ $DEPS == 'modern' ];
-    then nosetests --with-doctest;
-    else nosetests;
+    then nosetests --with-doctest --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_b618cc7450_0;
+    else nosetests --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_b618cc7450_0;
     fi
+  - python -m properform Push 47.88.50.110:15554 asdf_seaborn_b618cc7450_0 ./profile_seaborn_b618cc7450_0
+
+ #2017-08-13 15:26:08 modified at 0
