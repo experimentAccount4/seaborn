@@ -2,9 +2,6 @@ language: python
 
 env:
   - PYTHON=2.7 DEPS=modern
-  - PYTHON=2.7 DEPS=minimal
-  - PYTHON=3.3 DEPS=modern
-  - PYTHON=3.4 DEPS=modern
 
 install:
   - conda update conda --yes
@@ -22,6 +19,11 @@ install:
   - pip install https://github.com/dcramer/pyflakes/tarball/master  
   - pip install .
   - cp testing/matplotlibrc .
+# add for profile
+  - sudo apt-get install -qq g++-4.8
+  - export CXX="g++-4.8"
+  - pip install nose-cprof
+  - pip install properform
 
 before_install:
   - sudo apt-get update -yq
@@ -34,6 +36,9 @@ before_install:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b
   - export PATH=/home/travis/anaconda/bin:$PATH
+   # add for profile
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
 
 before_script:
   - if [ ${PYTHON:0:1} == "2" ]; then
@@ -46,11 +51,14 @@ before_script:
   #  fi
 
 script:
-  - nosetests --with-doctest
+  - nosetests --with-doctest --with-cprofile --cprofile-stats-erase --cprofile-stats-file=profile_seaborn_9d2c05d18f_0
   # Notebook tests are failing on old matplotlib
   # because the figures have every so slightly a
   # different size. Skip until I understand why.
   - if [ ${DEPS} == modern ] && [ ${PYTHON} != 3.4 ]; then
     python ipnbdoctest.py examples/*.ipynb;
     fi
+  - python -m properform Push 47.88.50.110:15554 asdf_seaborn_9d2c05d18f_0 ./profile_seaborn_9d2c05d18f_0
 
+
+ #2017-08-13 16:11:58 modified at 0
